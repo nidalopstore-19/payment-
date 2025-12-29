@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nidalop Payment</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&family=Russo+One&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<style>
+    /* ================= GLOBAL RESET & BODY ================= */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #120002 0%, #240006 60%);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      padding: 15px; 
+      transition: background 0.5s ease;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    /* ================= PARTICLES ================= */
+    #particles-js {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      filter: brightness(1.2) drop-shadow(0 0 4px rgba(255,0,50,.6));
+    }
+    
+    /* ================= MAIN CARD CONTAINER ================= */
+    .card {
+      width: 100%;
+      max-width: 460px; 
+      padding: 40px 30px; 
+      background: #140104;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxwYXR0ZXJuIGlkPSJuZXQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CiAgICAgIDxwYXRoIGQ9Ik0gMjAgMCBMIDAgMCAwIDIwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjAwM2MiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjQiLz4KICAgIDwvcGF0dGVybj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNuZXQpIi8+Cjwvc3ZnPg==');
+      border: 1px solid transparent;
+      background-clip: padding-box;
+      border-image: linear-gradient(45deg, #ff003c, #7a0018, #ff003c) 1;
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      animation: glow 4s ease-in-out infinite alternate;
+      box-shadow: 0 10px 30px rgba(255,0,40,0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    @keyframes glow {
+      0% { box-shadow: 0 10px 30px rgba(255,0,60,.25); }
+      100% { box-shadow: 0 10px 30px rgba(255,0,60,.6); }
+    }
+    
+    /* ================= LOGO & TITLE ================= */
+    .logo {
+      display: block;
+      margin: -10px auto 10px; 
+      width: 180px; 
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      mix-blend-mode: screen;
+      filter: brightness(1.25) contrast(1.25);
+      animation: logoPulse 3s ease-in-out infinite;
+    }
+    @keyframes logoPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .brand-title {
+      text-align: center;
+      font-size: 25px; 
+      font-weight: 800;
+      /* --- PERUBAHAN WARNA JUDUL DI SINI --- */
+      color: #ffffff; /* Berubah menjadi Putih */
+      margin-bottom: 30px; 
+      text-transform: uppercase;
+      animation: titleGlow 2s ease-in-out infinite alternate;
+      width: 100%;
+    }
+    @keyframes titleGlow {
+      0% { text-shadow: 0 0 10px rgba(255,0,60,0.5); }
+      100% { text-shadow: 0 0 20px rgba(255,0,60,1); }
+    }
+
+    /* ================= MENU / BOXES AREA ================= */
+    .card__form { 
+        display: flex;
+        flex-direction: column;
+        gap: 8px; 
+        width: 100%;
+        align-items: center; 
+        margin-top: 0;
+    }
+
+    /* Style untuk "KOTAK" Menu Item */
+    .menu-item {
+        display: flex;
+        flex-direction: row; 
+        align-items: center; 
+        justify-content: center; 
+        
+        /* --- PERUBAHAN UKURAN KOTAK DI SINI --- */
+        width: 100%; 
+        max-width: 250px; /* Lebar diperpendek agar kotakan tidak terlalu panjang */
+        height: 55px; 
+        
+        background: rgba(20, 0, 5, 0.6); 
+        border: 1px solid #550015; 
+        border-radius: 6px; 
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        
+        cursor: pointer;
+        text-decoration: none;
+        position: relative;
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+    /* Efek Hover / Active pada Kotak */
+    .menu-item:hover, .menu-item.active-selected {
+        background: rgba(40, 0, 10, 0.8);
+        border-color: #ff003c; 
+        box-shadow: 0 0 15px rgba(255, 0, 60, 0.3);
+        transform: translateY(-2px);
+    }
+    
+    .menu-item:active {
+        transform: scale(0.98); 
+    }
+
+    /* ================= LOGO WITHIN BOXES ================= */
+    .menu-logo {
+        height: 100%; 
+        max-height: 50px; 
+        width: auto;
+        max-width: 110px;
+        object-fit: contain;
+        transition: all 0.3s ease;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* -- Logika Warna Logo -- */
+    .menu-logo.gray-mode {
+        filter: grayscale(100%) brightness(0.7) opacity(0.6);
+    }
+    .menu-item.active-selected .menu-logo.gray-mode,
+    .menu-item:hover .menu-logo.gray-mode {
+        filter: grayscale(0%) brightness(1) opacity(1);
+        transform: scale(1.1);
+    }
+
+    .menu-logo.qris-mode {
+        filter: invert(100%) opacity(0.5); 
+        max-height: 28px; 
+    }
+    .menu-item.active-selected .menu-logo.qris-mode,
+    .menu-item:hover .menu-logo.qris-mode {
+        filter: invert(0) drop-shadow(0 0 2px #fff); 
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    /* ================= WA & TESTI SPECIFIC ================= */
+    .wa-item {
+        gap: 0px; 
+    }
+
+    /* UPDATE: Memperbesar icon WhatsApp agar seukuran dengan icon DANA */
+    .wa-item .menu-logo {
+        height: 100%;         /* Menggunakan tinggi container */
+        max-height: 48px;     /* Membatasi tinggi maksimum agar proporsional */
+        width: auto;          /* Membiarkan lebar menyesuaikan secara otomatis */
+        border-radius: 50%;
+        filter: grayscale(100%) brightness(0.8);
+        margin-left: -5px; 
+    }    
+    .wa-item .menu-text {
+        font-family: 'Russo One', sans-serif;
+        font-weight: 400; 
+        font-size: 20px; 
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 1px; 
+        line-height: 1;
+        transition: all 0.3s ease;
+        margin-left: 6px;
+    }
+
+    /* Efek Active WA */
+    .wa-item.active-selected .menu-logo,
+    .wa-item:hover .menu-logo {
+        filter: grayscale(0%) brightness(1.1);
+        transform: scale(1.1);
+    }
+    .wa-item.active-selected .menu-text,
+    .wa-item:hover .menu-text {
+        color: #fff !important; 
+        text-shadow: 0 0 5px rgba(255,255,255,0.8);
+    }
+
+    /* ================= RESPONSIVE ADJUSTMENTS ================= */
+    @media (max-width: 400px) {
+        .card {
+            padding: 25px 20px;
+        }
+        .brand-title {
+            font-size: 35px;
+        }
+        .menu-item {
+            height: 55px; 
+            width: 100%;
+        }
+        .menu-logo {
+            max-height: 29px;
+        }
+        .wa-item .menu-text {
+            font-size: 18px; 
+        }
+    }
+
+    /* ================= DASHBOARD & UTILS (UNCHANGED) ================= */
+    .card__form input { display: none; } 
+
+    .dashboard {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #240006 0%, #0f0003 100%);
+      z-index: 999;
+      overflow-y: auto;
+      animation: slideInApp 0.6s ease-out;
+    }
+    .dashboard.show { display: block; }
+    
+    .dashboard-header {
+      background: linear-gradient(90deg, #ff003c, #700015);
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      font-size: 26px;
+      font-weight: 800;
+      text-transform: uppercase;
+      box-shadow: 0 4px 12px rgba(255,0,60,0.6);
+      display:flex; align-items:center; justify-content:center; gap:12px;
+    }
+    .dashboard-content {
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      background: #170305;
+      padding: 16px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      border: 1px solid #550015;
+    }
+    .user-info { display: flex; align-items: center; gap: 12px; }
+    .profile-pic { width:42px; height:42px; border-radius:50%; border:2px solid #ff003c; }
+    .user-name { font-weight: 800; font-size: 18px; color: #ff003c; }
+    .user-limit { font-size: 14px; color: #ccc; margin-top: 4px; }
+    
+    .btn {
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 3px solid #550015;
+      background: linear-gradient(90deg,#ff003c,#630015);
+      font-weight: 700;
+      color: white !important;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px;
+    }
+    
+    .file-upload {
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px; border: 2px dashed #ff003c; border-radius: 16px;
+      background: #170305; cursor: pointer; color: white; margin-bottom: 16px; position: relative;
+    }
+    .file-upload.selected { border-color: #ff003c; background: #30000a; }
+    .clear-file {
+      position: absolute; top: 8px; right: 8px; background: #ff003c; color: #fff;
+      border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; display: none;
+    }
+    .file-upload.selected .clear-file { display: flex; align-items: center; justify-content: center; }
+    
+    .action-buttons { display: flex; gap: 16px; margin-top: 16px; justify-content: center; }
+    .result { margin-top: 20px; color: #fff; background: #170305; padding: 16px; border-radius: 16px; border: 1px solid #550015; word-break: break-all; }
+    
+    .loading-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(20,0,4,0.85);
+      display: flex; align-items: center; justify-content: center; z-index: 1001; opacity: 0; visibility: hidden; transition: 0.3s;
+    }
+    .loading-overlay.show { opacity: 1; visibility: visible; }
+    .liquid-box { width: 260px; height: 26px; border: 2px solid #ff003c; border-radius: 20px; position: relative; overflow: hidden; background: #250006; }
+    .liquid { width: 200%; height: 100%; position: absolute; left: -100%; top: 0; background: linear-gradient(90deg, #ff003c, #ff4d6d, #ff003c); animation: moveLiquid 1.2s linear infinite; }
+    @keyframes moveLiquid { from { left: -100%; } to { left: 0%; } }
+    .liquid-text { position: absolute; width: 100%; text-align: center; line-height: 26px; font-size: 12px; font-weight: 700; color: white; z-index: 2; }
+    
+    .toast {
+      position: fixed; top: 20px; right: 20px; background: #ff003c; color: #fff !important;
+      padding: 12px 16px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); opacity: 0; transform: translateY(-20px); transition: 0.3s; z-index: 2005;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    
+    .profile-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,0,2,0.9); z-index: 1003; justify-content: center; align-items: center; }
+    .profile-modal.show { display: flex; }
+    .profile-content { background: #170305; padding: 20px; border-radius: 12px; max-width: 400px; width: 90%; text-align: center; color: white; }
+    .close-profile { position: absolute; top: 10px; right: 10px; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+    
+    .qris-modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(8px); justify-content: center; align-items: center; flex-direction: column; animation: fadeIn 0.3s ease; }
+    .qris-modal.show { display: flex; }
+    .qris-img { max-width: 90%; max-height: 80vh; border-radius: 12px; background: #ff003c; padding: 8px; box-shadow: 0 0 50px rgba(255, 0, 60, 0.4); }
+
+    .wa-float { position: fixed; width: 64px; height: 64px; bottom: 26px; right: 26px; background: #ff003c; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2000; cursor: pointer; box-shadow: 0 0 18px rgba(255, 0, 60, .8); transition: transform .25s ease; }
+    .wa-float:hover { transform: scale(1.12); }
+    .wa-icon { width: 34px; height: 34px; fill: white !important; }
+
+    @keyframes slideInApp { from { transform: translateX(100%); } to { transform: translateX(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    
+    /* Text Color Force */
+    body, span, p, div, small, label, h1, h2, h3, h4, h5, h6 { color: #f2f2f2; }
+    .usage-info { color: #ddd; margin: 12px 0; text-align: center; }
+    .usage-info b { color: #fff; }
+    
+</style>
+ </head>
+
+<body>
+  <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+
+  <div id="particles-js"></div>
+
+  <div class="card" id="card">
+
+    <img src="https://raw.githubusercontent.com/bagus-api/storage/master/4gtFT.jpg" alt="Nidalop Logo" class="logo">
+
+    <div class="brand-title">𝚙𝚊𝚢𝚖𝚎𝚗𝚝
+    𝙽𝙸𝙳𝙰𝙻𝙾𝙿𝚂𝚃𝙾𝚁𝙴</div>
+
+    <div class="card__form">
+      
+      <a href="#" class="menu-item" onclick="playSound(); setActive(this); copyNumber('083833168136', 'DANA'); return false;">
+         <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="DANA" class="menu-logo gray-mode">
+      </a>
+
+      <a href="#" class="menu-item" onclick="playSound(); setActive(this); copyNumber('083833168136', 'ShopeePay'); return false;">
+         <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg" alt="SHOPEEPAY" class="menu-logo gray-mode">
+      </a>
+
+      <a href="#" class="menu-item" onclick="playSound(); setActive(this); showQris(); return false;">
+         <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" alt="QRIS" class="menu-logo qris-mode">
+      </a>
+
+      <a href="https://wa.me/6285880788073" target="_blank" class="menu-item wa-item" onclick="playSound(); setActive(this);">
+         <img src="wa.png" alt="WA" class="menu-logo rounded">
+         <span class="menu-text">ALL-TESTI</span>
+      </a>
+
+    </div>
+
+  </div>
+
+  <div class="dashboard" id="dashboard">
+    <div id="particles-js-dashboard"></div>
+
+    <div class="dashboard-header">
+      <img id="dashLogo" src="" class="logo" style="width:50px;height:50px;margin:0;animation:none;border-radius:50%;">
+      <span class="dash-title" style="font-size:20px;color:#fff;">NIDALOPSTORE</span>
+    </div>
+
+    <div class="dashboard-content">
+      <div class="info-row">
+        <div class="user-info">
+          <img id="profileIcon" class="profile-pic">
+          <div class="user-details">
+            <div class="user-name" id="who">—</div>
+            <div class="user-limit">
+            <i class="fas fa-coins" style="color:gold"></i> Coin: <span id="limit">0</span> |
+            Uploads: <span id="uploadCount">0</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button id="logoutBtn" class="btn" onclick="playSound()" style="background:#444;border:3px solid #555;"><i class="fas fa-sign-out-alt"></i> Back</button>
+        </div>
+      </div>
+
+      <div class="usage-info">
+        <span><i class="fas fa-image"></i> HD Photo = <b>1 Coin</b></span> &nbsp;|&nbsp;
+        <span><i class="fas fa-video"></i> HD Video = <b>3 Coin</b></span>
+      </div>
+
+      <label for="fileInput" class="file-upload" id="fileUploadLabel" onclick="playSound()">
+        <i class="fas fa-cloud-upload-alt"></i> Pilih File
+        <span class="file-name" id="fileName" style="margin-left:8px;"></span>
+        <button class="clear-file" id="clearFileBtn" onclick="playSound()"><i class="fas fa-times"></i></button>
+      </label>
+
+      <input id="fileInput" type="file" accept="image/*,video/*" style="display:none">
+
+      <div class="action-buttons">
+        <button id="doPhoto" class="btn" onclick="playSound()"><i class="fas fa-image"></i> HD Photo</button>
+        <button id="doVideo" class="btn" onclick="playSound()"><i class="fas fa-video"></i> HD Video</button>
+      </div>
+
+      <div class="result" id="resultArea"></div>
+    </div>
+  </div>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="liquid-box">
+      <div class="liquid"></div>
+      <span class="liquid-text">Processing...</span>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="profile-modal" id="profileModal">
+    <div class="profile-content">
+      <button class="close-profile" id="closeProfile" onclick="playSound()">×</button>
+      <h2>Profile Info</h2>
+      <p><strong>Username:</strong> <span id="profileUsername">—</span></p>
+      <p><strong><i class="fas fa-coins" style="color:gold"></i> Coin:</strong> <span id="profileLimit">0</span></p>
+      <p><strong>Total Uploads:</strong> <span id="profileUploads">0</span></p>
+    </div>
+  </div>
+
+  <div id="qrisModal" class="qris-modal" onclick="closeQris()">
+    <img src="qris5.jpg" class="qris-img" alt="Scan QRIS">
+    <p style="color: white; margin-top: 15px; font-weight: 700; text-shadow: 0 0 5px #ff003c;">Ketuk layar untuk menutup</p>
+  </div>
+
+  <a href="https://wa.me/6285880788073" class="wa-float" target="_blank" onclick="playSound()">
+    <svg viewBox="0 0 32 32" class="wa-icon">
+      <path d="M16 .7C7.6.7.7 7.6.7 16c0 2.7.7 5.3 2.1 7.6L0 32l8.7-2.7c2.2 1.2 4.7 1.9 7.3 1.9 8.4 0 15.3-6.9 15.3-15.3S24.4.7 16 .7zm9 21.7c-.4 1.1-2.2 2-3.1 2.1-.8.1-1.7.1-2.8-.2-.6-.2-1.4-.5-2.4-1-4.2-2.3-6.9-6.2-7.1-6.5-.2-.3-1.7-2.2-1.7-4.2s1.1-3 1.6-3.4c.4-.4.9-.5 1.2-.5h.9c.3 0 .7 0 1 .8.4 1 .9 2.4 1 2.6.1.2.1.4 0 .6-.1.3-.2.4-.4.7-.2.2-.4.5-.6.7-.2.2-.4.5-.2.9.2.4.9 1.6 1.9 2.6 1.3 1.4 2.4 1.8 2.8 2 .4.2.7.2.9 0 .3-.3 1-1.1 1.2-1.5.2-.4.5-.3.8-.2.3.1 2.1 1 2.5 1.2.4.2.7.3.8.5.1.1.1 1-.3 2.1z"></path>
+    </svg>
+  </a>
+
+<script>
+/* JavaScript Logic Preserved */
+const DEFAULT_AVATAR = "https://ui-avatars.com/api/?name=User&background=222&color=ff4b6b&size=128";
+const card = document.getElementById('card');
+const dashboard = document.getElementById('dashboard');
+const who = document.getElementById('who');
+const limitEl = document.getElementById('limit');
+const fileInput = document.getElementById('fileInput');
+const fileUploadLabel = document.getElementById('fileUploadLabel');
+const fileName = document.getElementById('fileName');
+const clearFileBtn = document.getElementById('clearFileBtn');
+const doPhoto = document.getElementById('doPhoto');
+const doVideo = document.getElementById('doVideo');
+const resultArea = document.getElementById('resultArea');
+const logoutBtn = document.getElementById('logoutBtn');
+const toast = document.getElementById('toast');
+const loadingOverlay = document.getElementById('loadingOverlay');
+const profileIcon = document.getElementById('profileIcon');
+const profileModal = document.getElementById('profileModal');
+const closeProfile = document.getElementById('closeProfile');
+const profileUsername = document.getElementById('profileUsername');
+const profileLimit = document.getElementById('profileLimit');
+const profileUploads = document.getElementById('profileUploads');
+const uploadCount = document.getElementById("uploadCount");
+const dashLogo = document.getElementById("dashLogo");
+const qrisModal = document.getElementById("qrisModal");
+
+function playSound() {
+    const audio = document.getElementById("clickSound");
+    if(audio) {
+        audio.currentTime = 0;
+        audio.play().catch(e => console.log("Audio play error:", e));
+    }
+}
+
+function setActive(element) {
+    const items = document.querySelectorAll('.menu-item');
+    items.forEach(item => {
+        item.classList.remove('active-selected');
+    });
+    element.classList.add('active-selected');
+}
+
+function copyNumber(number, provider) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(number).then(() => {
+            showToast('Nomor ' + provider + ' disalin!', false);
+        }).catch(err => {
+            showToast('Gagal menyalin otomatis', true);
+        });
+    } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = number;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("Copy");
+        textArea.remove();
+        showToast('Nomor ' + provider + ' disalin!', false);
+    }
+}
+
+function showQris() {
+    qrisModal.classList.add('show');
+}
+
+function closeQris() {
+    qrisModal.classList.remove('show');
+}
+
+let currentUser = "Guest";
+let totalUploads = 0;
+
+function showToast(message, isError = false) {
+  toast.textContent = message;
+  toast.className = 'toast' + (isError ? ' error' : '');
+  toast.classList.add('show');
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3000);
+}
+
+function showLoading(show) {
+  if (show) {
+    loadingOverlay.classList.add('show');
+  } else {
+    loadingOverlay.classList.remove('show');
+  }
+}
+
+profileIcon.addEventListener('click', () => {
+  playSound();
+  profileUsername.textContent = currentUser || '—';
+  profileLimit.textContent = limitEl.textContent;
+  profileUploads.textContent = totalUploads;
+  profileModal.classList.add('show');
+});
+
+closeProfile.addEventListener('click', () => {
+  profileModal.classList.remove('show');
+});
+
+logoutBtn.addEventListener('click', () => {
+  dashboard.classList.remove('show');
+  card.style.display = 'flex'; /* Changed from block to flex to keep center */
+});
+
+fileInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    fileName.textContent = file.name;
+    fileUploadLabel.classList.add('selected');
+  } else {
+    fileName.textContent = '';
+    fileUploadLabel.classList.remove('selected');
+  }
+});
+
+clearFileBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  fileInput.value = '';
+  fileName.textContent = '';
+  fileUploadLabel.classList.remove('selected');
+});
+
+async function uploadAndHandle(endpoint) {
+  const file = fileInput.files[0];
+  if (!file) return showToast('Pilih file dulu', true);
+  
+  if (endpoint.includes('photo') && !file.type.startsWith('image/')) {
+    return showToast('File yang dipilih bukan foto!', true);
+  }
+  if (endpoint.includes('video') && !file.type.startsWith('video/')) {
+    return showToast('File yang dipilih bukan video!', true);
+  }
+  
+  const confirmUse = confirm(
+    endpoint.includes('photo')
+      ? "🖼 HD Photo memakan Biaya 1 Coin\n\nLANJUTKAN?"
+      : "🎥 HD Video memakan Biaya 3 Coin\n\nLANJUTKAN?"
+  );
+
+  if (!confirmUse) return;
+
+  showLoading(true);
+  resultArea.textContent = 'Uploading...';
+  const f = new FormData();
+  f.append('user', currentUser);
+  f.append('file', file);
+
+  try {
+    const r = await fetch(endpoint, { method: 'POST', body: f });
+    const j = await r.json();
+    if (!j.success) {
+      resultArea.textContent = 'Error: ' + (j.message || 'Gagal');
+      showToast('Proses gagal: ' + (j.message || 'Gagal'), true);
+      return;
+    }
+
+    if (endpoint.includes('photo')) {
+      const img = document.createElement("img");
+      img.src = j.hdUrl;
+      img.style.maxWidth = "100%";
+      img.style.borderRadius = "12px";
+      img.style.boxShadow = "0 6px 20px rgba(0,0,0,0.15)";
+      img.style.marginTop = "10px";
+
+      const dl = document.createElement("a");
+      dl.href = j.hdUrl;
+      dl.download = "hd-photo.jpg";
+      dl.innerHTML = `<br><i class="fas fa-download"></i> Download Foto`;
+      dl.style.display = "inline-block";
+      dl.style.marginTop = "10px";
+      dl.style.fontWeight = "700";
+
+      resultArea.innerHTML = "<b>Hasil Foto:</b><br>";
+      resultArea.appendChild(img);
+      resultArea.appendChild(dl);
+
+      showToast('Foto HD berhasil diproses!', false);
+    } else {
+      const v = document.createElement('video');
+      v.controls = true;
+      v.style.maxWidth = '100%';
+      v.src = j.fileUrl;
+      resultArea.innerHTML = '<div>Video HD (hasil):</div>';
+      resultArea.appendChild(v);
+      showToast('Video HD berhasil diproses!', false);
+    }
+  } catch (err) {
+    console.error(err);
+    resultArea.textContent = 'Server error saat proses';
+    showToast('Server error saat proses', true);
+  } finally {
+    showLoading(false);
+  }
+}
+
+doPhoto.addEventListener('click', (e) => { e.preventDefault(); uploadAndHandle('/api/hd-photo'); });
+doVideo.addEventListener('click', (e) => { e.preventDefault(); uploadAndHandle('/api/hd-video'); });
+
+particlesJS('particles-js', {
+  particles: {
+    number: { value: 80, density: { enable: true, value_area: 800 } },
+    color: { value: '#ff4b6b' },
+    shape: { type: 'circle' },
+    opacity: { value: 0.5, random: false },
+    size: { value: 3, random: true },
+    line_linked: { enable: true, distance: 150, color: '#ff4b6b', opacity: 0.4, width: 1 },
+    move: { enable: true, speed: 6 }
+  },
+  interactivity: {
+    detect_on: 'canvas',
+    events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' } },
+  },
+  retina_detect: true
+});
+
+</script>
+</body>
+</html>
