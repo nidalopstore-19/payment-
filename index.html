@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NIDALOPSTORE</title>
+
+<style>
+
+/* ================= BODY ================= */
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #000;
+
+  background-image:
+    linear-gradient(rgba(139, 0, 0, 0.30) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 0, 0, 0.30) 1px, transparent 1px);
+  background-size: 40px 40px;
+
+  animation: gridMove 3s linear infinite;
+  font-family: 'Courier New', monospace;
+}
+
+@keyframes gridMove {
+  from { background-position: 0 0; }
+  to   { background-position: 0 -40px; }
+}
+
+/* ================= KOTAK ATAS ================= */
+.kotak-atas {
+  position: relative;
+  margin-top: 40px;
+  width: 92%;
+  max-width: 500px;
+  height: 200px;
+  border: 2px solid #8B0000;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow:
+    0 0 15px #8B0000,
+    0 0 30px #8B0000,
+    inset 0 0 15px #8B0000;
+}
+
+.kotak-atas video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.text-atas {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  color: #00ff00;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.6);
+  text-shadow: 0 0 6px #00ff00;
+
+  font-family: 'Courier New', monospace; /* tambahin ini */
+}
+.text-atas.kiri {
+  left: 15px;
+  right: auto;
+}
+/* ================= BULAT ================= */
+.bulat {
+  position: relative;
+  margin-top: -60px;
+  z-index: 10;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid #8B0000;
+  background: #000;
+  box-shadow:
+    0 0 15px #8B0000,
+    inset 0 0 10px #8B0000;
+}
+
+.bulat img {
+  width: 110%;
+  height: 110%;
+  object-fit: cover;
+}
+
+.nick {
+  margin-top: 18px;
+  color: #ffffff;
+  font-size: 30px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-shadow:
+    0 0 5px #ff0000,
+    0 0 15px #ff0000;
+}
+
+.pay-btn {
+  width: 85%;
+  max-width: 400px;
+  padding: 9px;
+  margin: 8px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  background: #8B0000; /* tetap merah */
+  border: 2px solid #ff0000;
+  border-radius: 14px;
+
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+
+  opacity: 0.5; /* awalnya abu */
+}
+.pay-btn.dana img {
+  width: 125px;
+  height: 40px;
+}
+
+.pay-btn.shopee img {
+  width: 127px;
+  height: 40px;
+}
+
+.pay-btn.qris img {
+  width: 170px;
+  height: 40px;
+}
+/* Efek klik sementara */
+.pay-btn.clicked {
+  background-color: #f00; /* merah / warna efek klik */
+  transform: scale(0.95); /* sedikit mengecil */
+}
+
+.pay-btn.active {
+  opacity: 1; /* jadi normal */
+  box-shadow: 0 0 20px  #8B0000;
+}
+
+.pay-btn span {
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: white;
+}
+
+.pay-btn:hover {
+  background: #8B0000;
+  box-shadow: 0 0 20px #8B0000;
+  transform: scale(1.05);
+}
+
+.pay-btn img {
+  width: 140px;
+  height: 40px;
+}
+
+/* MUSIC BUTTON */
+#musicBtn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: 2px solid cyan;
+  background: transparent;
+  color: cyan;
+  cursor: pointer;
+  font-weight: bold;
+}
+/* ===== MUSIC TOGGLE ===== */
+.music-container {
+  --color: white;
+  --size: 35px;
+  margin-top: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  font-size: var(--size);
+  user-select: none;
+  fill: var(--color);
+
+  transition: 0.3s;
+}
+
+.music-container:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px #ff0000);
+}
+
+.music-container .play,
+.music-container .pause {
+  position: absolute;
+  width: 1em;
+  height: 1em;
+  animation: keyframes-fill 0.3s;
+}
+
+.music-container .pause {
+  display: none;
+}
+
+.music-container input:checked ~ .play {
+  display: none;
+}
+
+.music-container input:checked ~ .pause {
+  display: block;
+}
+
+.music-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+@keyframes keyframes-fill {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+#toast {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+
+  background: #8B0000;
+  color: white;
+  padding: 14px 22px;
+  border-radius: 12px;
+
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 1px;
+
+  box-shadow: 0 0 20px #8B0000;
+
+  opacity: 0;
+  transform: translateX(100%);
+  transition: 0.4s ease;
+
+  z-index: 9999;
+}
+.music-box {
+  margin-top: 25px;
+  padding: 18px 30px;
+  border: 2px solid #8B0000;
+  border-radius: 15px;
+  background: rgba(0,0,0,0.6);
+  box-shadow:
+    0 0 15px #8B0000,
+    inset 0 0 10px #8B0000;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  transition: 0.3s;
+}
+
+.music-title {
+  color: white;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-align: center;
+  text-shadow: 0 0 10px red;
+}
+#toast.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+/* Better Responsive QR POPUP */
+.qr-popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px; /* Reduced from 200px */
+}
+
+.qr-popup img {
+  max-width: 90%; /* Scale based on screen size */
+  max-height: 80vh;
+  border-radius: 15px;
+  border: 3px solid #8B0000;
+  box-shadow: 0 0 30px #ff0000;
+}
+/* ================= FIRE EFFECT ================= */
+.fire-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.spark {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, red, orange, transparent);
+  animation: rise linear forwards;
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-700px) scale(0.3);
+    opacity: 0;
+  }
+}
+
+</style>
+</head>
+
+<body>
+  <div class="fire-container"></div>
+  
+  <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+  
+<div class="kotak-atas">
+  <div class="text-atas">ONLINE</div>
+  <div class="text-atas kiri" id="digitalClock"></div>
+  <video autoplay muted loop playsinline>
+    <source src="https://files.catbox.moe/hy6wgi.mp4" type="video/mp4">
+  </video>
+</div>
+
+<div class="bulat">
+  <img src="https://files.catbox.moe/0x0jxj.jpg">
+</div>
+
+<h1 class="nick">NIDALOPSTORE</h1>
+<br>
+<div id="toast"></div>
+<button class="pay-btn dana">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg">
+</button>
+
+<button class="pay-btn shopee">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/Shopee.svg">
+</button>
+
+<button class="pay-btn qris">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg">
+</button>
+
+<button class="pay-btn testi">
+  ALL-TESTI
+</button>
+<br></br>
+<div class="music-box">
+
+  <label class="music-container">
+    <input type="checkbox" id="musicToggle" />
+    
+    <svg
+      class="play"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 384 512"
+    >
+      <path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/>
+    </svg>
+
+    <svg
+      class="pause"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 320 512"
+    >
+      <path d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z"/>
+    </svg>
+  </label>
+
+  <div class="music-title">
+    <br></br>
+    DJ NIDALOP – NIGHT MODE 🔥
+  </div>
+
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="https://files.catbox.moe/r6mf1b.mp3" type="audio/mpeg">
+</audio>
+
+<!-- QR POPUP -->
+<div class="qr-popup" id="qrPopup">
+  <img src="https://files.catbox.moe/wb6x1a.jpg">
+</div>
+
+<script>
+const fireContainer = document.querySelector(".fire-container");
+const musicBox = document.querySelector(".music-box");
+const clickSound = document.getElementById("clickSound");
+const bgMusic = document.getElementById("bgMusic");
+const musicToggle = document.getElementById("musicToggle");
+const qrPopup = document.getElementById("qrPopup");
+const toast = document.getElementById("toast");
+
+let fireInterval;
+
+// ================= CLICK SOUND =================
+function playClick() {
+  clickSound.currentTime = 0;
+  clickSound.play();
+}
+
+// ================= FIRE EFFECT =================
+function createSpark() {
+  const spark = document.createElement("div");
+  spark.classList.add("spark");
+
+  spark.style.left = Math.random() * 100 + "vw";
+  spark.style.bottom = "0px";
+
+  const size = Math.random() * 4 + 2;
+  spark.style.width = size + "px";
+  spark.style.height = size + "px";
+
+  const duration = Math.random() * 3 + 1;
+  spark.style.animationDuration = duration + "s";
+
+  fireContainer.appendChild(spark);
+
+  setTimeout(() => {
+    spark.remove();
+  }, duration * 1000);
+}
+
+function startFire() {
+  fireInterval = setInterval(createSpark, 170);
+}
+
+function stopFire() {
+  clearInterval(fireInterval);
+}
+
+// ================= MUSIC TOGGLE =================
+musicToggle.addEventListener("change", function() {
+  playClick();
+
+  if (this.checked) {
+    bgMusic.play();
+    musicBox.classList.add("active");
+    startFire();
+  } else {
+    bgMusic.pause();
+    musicBox.classList.remove("active");
+    stopFire();
+  }
+});
+
+// ================= TOAST COPY =================
+function copyText(text, type) {
+  playClick();
+  navigator.clipboard.writeText(text).then(() => {
+    toast.innerText = type + " Tersalin!"; // <-- lebih singkat
+    toast.classList.add("show");
+
+    setTimeout(() => toast.classList.remove("show"), 1500); // waktu lebih singkat juga
+  });
+}
+
+// ================= BUTTON ACTIONS =================
+document.querySelector(".dana").onclick = function() {
+  copyText("083833168136", "DANA");
+};
+
+document.querySelector(".shopee").onclick = function() {
+  copyText("085880788073", "SHOPEE");
+};
+
+document.querySelector(".qris").onclick = function() {
+  playClick();
+  qrPopup.style.display = "flex";
+};
+
+qrPopup.onclick = function() {
+  qrPopup.style.display = "none";
+};
+
+document.querySelector(".testi").onclick = function() {
+  playClick();
+  setTimeout(() => {
+    window.open("https://whatsapp.com/channel/0029Vb7Tnx1EgGfOwIDC5Y2T", "_blank");
+  }, 200);
+};
+// FIRE LANGSUNG JALAN SAAT PAGE LOAD
+startFire();
+// ================= DIGITAL CLOCK =================
+function updateClock() {
+  const now = new Date();
+
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+
+  const clock = document.getElementById("digitalClock");
+  if (clock) {
+    clock.innerText = hours + ":" + minutes + ":" + seconds;
+  }
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+</script>
+</body>
+</html>
